@@ -16,3 +16,17 @@ model Article {
   // authorId  Int
   // User      User     @relation(fields: [authorId], references: [id])
 }
+
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  username  String
+  email     String   @unique
+  avatar    String
+  from      UserFrom
+}
+
+enum UserFrom {
+  GITHUB
+  GITLAB
+}
