@@ -7,26 +7,37 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Article {
-  id        Int      @id @default(autoincrement())
-  title     String   @db.VarChar(255)
-  createdAt DateTime @default(now()) @db.Timestamp(6)
-  content   String
-  // published Boolean  @default(false)
-  // authorId  Int
-  // User      User     @relation(fields: [authorId], references: [id])
-}
-
 model User {
-  id        Int      @id @default(autoincrement())
+  id       Int        @id @default(autoincrement())
+  username String
+  email    String     @unique
+  avatar   String
+  from     E_UserFrom
+  Article  Article[]
+
   createdAt DateTime @default(now())
-  username  String
-  email     String   @unique
-  avatar    String
-  from      UserFrom
+  updatedAt DateTime @updatedAt
 }
 
-enum UserFrom {
+enum E_UserFrom {
   GITHUB
   GITLAB
+}
+
+model Article {
+  id       Int             @id @default(autoincrement())
+  title    String          @db.VarChar(255)
+  content  String
+  status   E_ArticleStatus
+  author   User            @relation(fields: [authorId], references: [id])
+  authorId Int // relation scalar field  (used in the `@relation` attribute above)
+
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  updatedAt DateTime @updatedAt
+}
+
+enum E_ArticleStatus {
+  DRAFT
+  CHECKED
+  PUBLISHED
 }

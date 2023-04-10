@@ -1,8 +1,8 @@
-import { UserFrom } from '@prisma/client'
+import { E_UserFrom } from '@prisma/client'
 
 export type T_CreateUser = {
   email: string
   username: string
   avatar: string
-  from: UserFrom
+  from: E_UserFrom
 }

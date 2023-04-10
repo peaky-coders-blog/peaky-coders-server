@@ -1,14 +1,20 @@
-import { Injectable } from '@nestjs/common'
+import { ForbiddenException, Injectable } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtService } from '@nestjs/jwt'
 
 import { T_UserData } from './models/clientTokens.model'
 
+import { PrismaService } from '../prisma/prisma.service'
+
 import { T_ClientTokens } from '@app/common/models/shared/tokens'
 
 @Injectable()
 export class TokensService {
-  constructor(private jwtService: JwtService, private config: ConfigService) {}
+  constructor(
+    private jwtService: JwtService,
+    private config: ConfigService,
+    private prisma: PrismaService,
+  ) {}
 
   async generateClientTokens({
     userId,
@@ -26,7 +32,7 @@ export class TokensService {
         },
         {
           secret: this.config.get('CLIENT_JWT_SECRET_AT'),
-          expiresIn: 120 * 60, // 10 минут
+          expiresIn: 60 * 120, // 10 минут
         },
       ),
       this.jwtService.signAsync(

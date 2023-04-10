@@ -1,4 +1,4 @@
-import { User, UserFrom } from '@prisma/client'
+import { User } from '@prisma/client'
 import { Injectable } from '@nestjs/common'
 
 import { T_CreateUser } from './models/createUser.model'

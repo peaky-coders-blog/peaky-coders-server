@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common'
-import { UserFrom } from '@prisma/client'
+import { E_UserFrom } from '@prisma/client'
 
 import { T_GithubUser } from './models/github.model'
 
@@ -13,7 +13,7 @@ export class AuthService {
     private tokensService: TokensService,
   ) {}
 
-  async authByThirdParty(data: T_GithubUser, from: UserFrom) {
+  async authByThirdParty(data: T_GithubUser, from: E_UserFrom) {
     const user = await this.usersService.findUnique('email', data.email)
 
     // Аутентификация
