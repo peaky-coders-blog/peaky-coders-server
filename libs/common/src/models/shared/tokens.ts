@@ -1,4 +1,4 @@
-export type T_ClientTokens = {
+export type T_AuthTokens = {
   accessToken: string
   refreshToken: string
 }
@@ -8,4 +8,9 @@ export type T_ClientTokenData = {
   email: string
   avatar: string
   username: string
+}
+
+export type T_AdminTokenData = {
+  sub: number
+  email: string
 }

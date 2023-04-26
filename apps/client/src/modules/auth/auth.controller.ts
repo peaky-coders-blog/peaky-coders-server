@@ -81,11 +81,4 @@ export class AuthController {
     const { sub, ...rest } = token
     return this.tokensService.generateClientTokens({ ...rest, userId: sub })
   }
-
-  @Get('/user')
-  @UseGuards(AuthGuard('jwt'))
-  async deleteUser() {
-    return 'ok'
-    // this.tokensService.addTokenToBlacklist()
-  }
 }

@@ -7,11 +7,11 @@ import { AuthController } from './auth.controller'
 import { AuthService } from './auth.service'
 import { GithubStrategy } from './strategies/github.strategy'
 import { GitlabStrategy } from './strategies/gitlab.strategy'
-import { AccessTokenStrategy } from './strategies/accessesToken.strategy'
-import { RefreshTokenStrategy } from './strategies/refreshToken.strategy'
 
 import { UsersService } from '@app/common/modules/users/users.service'
 import { TokensService } from '@app/common/modules/tokens/tokens.service'
+import { AccessTokenStrategy } from '@app/common/strategies/accessesToken.strategy'
+import { RefreshTokenStrategy } from '@app/common/strategies/refreshToken.strategy'
 
 @Module({
   imports: [
