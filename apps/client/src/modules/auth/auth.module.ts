@@ -5,13 +5,15 @@ import { JwtModule } from '@nestjs/jwt'
 
 import { AuthController } from './auth.controller'
 import { AuthService } from './auth.service'
-import { GithubStrategy } from './strategies/github.strategy'
-import { GitlabStrategy } from './strategies/gitlab.strategy'
+import {
+  AccessTokenStrategy,
+  RefreshTokenStrategy,
+  GithubStrategy,
+  GitlabStrategy,
+} from './strategies'
 
 import { UsersService } from '@app/common/modules/users/users.service'
 import { TokensService } from '@app/common/modules/tokens/tokens.service'
-import { AccessTokenStrategy } from '@app/common/strategies/accessesToken.strategy'
-import { RefreshTokenStrategy } from '@app/common/strategies/refreshToken.strategy'
 
 @Module({
   imports: [

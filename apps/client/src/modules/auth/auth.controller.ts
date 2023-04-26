@@ -18,6 +18,7 @@ import { TokensService } from '@app/common/modules/tokens/tokens.service'
 import { JwtRefreshGuard } from '@app/common/guards/jwtRefresh.guard'
 import { GetAuthTokenData } from '@app/common/decorators/getAuthTokenData.decorator'
 import { T_ClientTokenData } from '@app/common/models/shared/tokens'
+import { ApiBearerAuth } from '@nestjs/swagger'
 
 @Controller('auth')
 export class AuthController {
@@ -75,6 +76,7 @@ export class AuthController {
   }
 
   // Обновление токенов
+  @ApiBearerAuth()
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
   refreshTokens(@GetAuthTokenData() token: T_ClientTokenData) {

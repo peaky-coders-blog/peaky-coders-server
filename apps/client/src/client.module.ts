@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common'
+import { JwtModule } from '@nestjs/jwt'
 import { ConfigModule } from '@nestjs/config'
 import { ScheduleModule } from '@nestjs/schedule'
 
@@ -9,6 +10,7 @@ import { AuthModule } from './modules/auth/auth.module'
 
 @Module({
   imports: [
+    JwtModule.register({}),
     ArticlesModule,
     PrismaModule,
     ConfigModule.forRoot({ isGlobal: true }),
