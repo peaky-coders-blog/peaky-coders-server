@@ -14,6 +14,7 @@ import {
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { AuthGuard } from '@nestjs/passport'
 
+import { AdminsService } from './admins.service'
 import { CreateAdminDto, UpdateAdminDto, ChangePasswordDto } from './dtos'
 import {
   T_CreateAdminResponse,
@@ -21,8 +22,6 @@ import {
   T_GetAdminResponse,
   T_UpdateAdminResponse,
 } from './models'
-
-import { AdminsService } from 'apps/admin/src/modules/admins/admins.service'
 
 @ApiBearerAuth()
 @ApiTags('Admins')
@@ -51,11 +50,11 @@ export class AdminsController {
 
   @Put(':id')
   @HttpCode(HttpStatus.OK)
-  async updateOne(
+  updateOne(
     @Param('id') id: string,
     @Body() dto: UpdateAdminDto,
   ): Promise<T_UpdateAdminResponse> {
-    return await this.service.updateOne(dto, +id)
+    return this.service.updateOne(+id, dto)
   }
 
   @Delete(':id')

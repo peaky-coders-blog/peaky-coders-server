@@ -12,7 +12,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 
 import { AuthService } from './auth.service'
 import { SignInDto } from './dtos'
-import { T_AuthResponse } from './models'
+import { T_AuthResponse, T_RefreshResponse } from './models'
 
 import { GetUserId } from '@app/common/decorators/getUserId.decorator'
 import { JwtRefreshGuard } from '@app/common/guards/jwtRefresh.guard'
@@ -49,9 +49,17 @@ export class AuthController {
   @ApiBearerAuth()
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
-  refresh(@GetAdminTokenData() token: T_TokenData) {
+  async refresh(
+    @GetAdminTokenData() token: T_TokenData,
+  ): Promise<T_RefreshResponse> {
     const { sub, ...rest } = token
     // Получаем юзера и формируем новый токен
-    return this.tokensService.generateAdminTokens({ ...rest, userId: sub })
+    const tokens = await this.tokensService.generateAdminTokens({
+      ...rest,
+      userId: sub,
+    })
+    return {
+      data: tokens,
+    }
   }
 }

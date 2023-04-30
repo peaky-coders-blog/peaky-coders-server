@@ -64,8 +64,8 @@ export class AdminsService {
   }
 
   async updateOne(
-    dto: UpdateAdminDto,
     adminId: T_AdminId,
+    dto: UpdateAdminDto,
   ): Promise<T_UpdateAdminResponse> {
     try {
       const admin = await this.prisma.admin.update({
