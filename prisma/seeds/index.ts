@@ -2,14 +2,19 @@ import { PrismaClient } from '@prisma/client'
 
 import { articlesSeed } from './articles.seed'
 import { usersSeed } from './users.seed'
-import { adminSeed } from './admin.seed'
+import { adminsSeed } from './admins.seed'
+import { tagsSeed } from './tags.seed'
+import { reactionsSeed } from './reactions.seed'
 
 const prisma = new PrismaClient()
 
 async function main() {
+  await adminsSeed()
+
+  await tagsSeed()
+  await reactionsSeed()
   const superUser = await usersSeed()
   await articlesSeed(superUser)
-  await adminSeed()
 }
 
 main()

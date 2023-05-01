@@ -41,20 +41,22 @@ describe('ArticlesController', () => {
       email: 'test@gmail.com',
       password: '123456',
     }
-    const hashedPassword = await argon2.hash(dto.password)
+    dto.password = await argon2.hash(dto.password)
 
     expect(
       adminsController.createOne({
         email: dto.email,
-        password: hashedPassword,
+        password: dto.password,
       }),
     ).toEqual({
       id: expect.any(Number),
       email: dto.email,
-      password: hashedPassword,
+      password: dto.password,
       createdAt: expect.any(Date),
       updatedAt: expect.any(Date),
     })
+
+    expect(mockAdminsService.createOne).toHaveBeenCalledWith(dto)
   })
 
   it('should update a admin', () => {
@@ -66,5 +68,7 @@ describe('ArticlesController', () => {
       id: 1,
       ...dto,
     })
+
+    expect(mockAdminsService.updateOne).toHaveBeenCalled()
   })
 })

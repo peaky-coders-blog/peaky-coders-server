@@ -13,7 +13,11 @@ model User {
   email    String     @unique
   avatar   String
   from     E_UserFrom
-  Article  Article[]
+
+  Article             Article[]
+  ArticleComments     ArticleComment[]
+  ArticleCommentVotes ArticleCommentVotes[]
+  ArticleReactions    ArticleReaction[]     @relation("ArticleReactionOnUser")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -30,9 +34,14 @@ model Article {
   content  String
   status   E_ArticleStatus
   author   User            @relation(fields: [authorId], references: [id])
-  authorId Int // relation scalar field  (used in the `@relation` attribute above)
+  authorId Int
 
-  createdAt DateTime @default(now()) @db.Timestamp(6)
+  tags Tags[] @relation("TagsOnArticles")
+
+  ArticleComment  ArticleComment[]
+  ArticleReaction ArticleReaction[]
+
+  createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
@@ -42,10 +51,81 @@ enum E_ArticleStatus {
   PUBLISHED
 }
 
+model ArticleComment {
+  id        Int    @id @default(autoincrement())
+  text      String
+  articleId Int
+
+  votes               Int
+  articleCommentVotes ArticleCommentVotes[]
+
+  article Article @relation(fields: [articleId], references: [id])
+
+  authorId Int
+  author   User @relation(fields: [authorId], references: [id])
+
+  articleComment ArticleComment?  @relation("ArticleComment", fields: [parentId], references: [id])
+  subcomments    ArticleComment[] @relation("ArticleComment")
+  parentId       Int?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ArticleCommentVotes {
+  id Int @id @default(autoincrement())
+
+  articleComment   ArticleComment @relation(fields: [articleCommentId], references: [id])
+  articleCommentId Int
+
+  authorCommentVote User @relation(fields: [authorId], references: [id])
+  authorId          Int
+}
+
+model Tags {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  description String?
+  icon        String
+
+  articles Article[] @relation("TagsOnArticles")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ArticleReaction {
+  id      Int @id @default(autoincrement())
+  counter Int
+
+  reaction   Reaction @relation(fields: [reactionId], references: [id])
+  reactionId Int
+
+  article   Article @relation(fields: [articleId], references: [id])
+  articleId Int
+
+  authors User[] @relation("ArticleReactionOnUser")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Reaction {
+  id   Int    @id @default(autoincrement())
+  name String
+  icon String
+
+  ArticleReaction ArticleReaction[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Admin {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String
+  id       Int    @id @default(autoincrement())
+  email    String @unique
+  password String
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

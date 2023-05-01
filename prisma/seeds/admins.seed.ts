@@ -3,7 +3,7 @@ import * as argon2 from 'argon2'
 
 const prisma = new PrismaClient()
 
-export const adminSeed = async () => {
+export const adminsSeed = async () => {
   const hashedPassword = await argon2.hash('test1')
 
   await prisma.admin.upsert({
