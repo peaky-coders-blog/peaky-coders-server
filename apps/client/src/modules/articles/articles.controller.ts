@@ -2,15 +2,17 @@ import { Controller, Get, Param, Query } from '@nestjs/common'
 import { Article } from '@prisma/client'
 
 import { ArticlesService } from './articles.service'
-import { T_GetArticles } from './models'
 
 @Controller('articles')
 export class ArticlesController {
   constructor(private readonly articlesService: ArticlesService) {}
 
   @Get()
-  getArticles(@Query() query: T_GetArticles): Promise<Article[]> {
-    return this.articlesService.getArticles(query)
+  getArticles(
+    @Query('cursor') cursor: number,
+    @Query('limit') limit: number,
+  ): Promise<Article[]> {
+    return this.articlesService.getArticles({ cursor: +cursor, limit: +limit })
   }
 
   @Get(':id')

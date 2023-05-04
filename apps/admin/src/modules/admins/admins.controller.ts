@@ -23,6 +23,8 @@ import {
   T_UpdateAdminResponse,
 } from './models'
 
+import { T_AdminId } from '@app/common/models/shared/admin'
+
 @ApiBearerAuth()
 @ApiTags('Admins')
 @UseGuards(AuthGuard('jwt'))
@@ -38,8 +40,8 @@ export class AdminsController {
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  getOne(@Param('id') id: string): Promise<T_GetAdminResponse> {
-    return this.service.getOne(+id)
+  getOne(@Param('id') id: T_AdminId): Promise<T_GetAdminResponse> {
+    return this.service.getOne(id)
   }
 
   @Post()
@@ -51,7 +53,7 @@ export class AdminsController {
   @Put(':id')
   @HttpCode(HttpStatus.OK)
   updateOne(
-    @Param('id') id: string,
+    @Param('id') id: T_AdminId,
     @Body() dto: UpdateAdminDto,
   ): Promise<T_UpdateAdminResponse> {
     return this.service.updateOne(+id, dto)
@@ -59,13 +61,13 @@ export class AdminsController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  deleteOne(@Param('id') id: string) {
+  deleteOne(@Param('id') id: T_AdminId) {
     return this.service.deleteOne(+id)
   }
 
   @Patch('changePassword/:id')
   @HttpCode(HttpStatus.OK)
-  changePassword(@Param('id') id: string, @Body() dto: ChangePasswordDto) {
+  changePassword(@Param('id') id: T_AdminId, @Body() dto: ChangePasswordDto) {
     return this.service.changePassword(dto, +id)
   }
 }

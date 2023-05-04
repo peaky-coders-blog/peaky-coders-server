@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 
-import { T_GetArticles, T_GetArticle } from './models'
+import { T_GetArticlesRequest, T_GetArticleRequest } from './models'
 
 import { PrismaService } from '@app/common/modules/prisma/prisma.service'
 
@@ -8,12 +8,12 @@ import { PrismaService } from '@app/common/modules/prisma/prisma.service'
 export class ArticlesService {
   constructor(private prisma: PrismaService) {}
 
-  async getArticles({ cursor, limit }: T_GetArticles) {
+  async getArticles({ cursor, limit }: T_GetArticlesRequest) {
     try {
       const articles = await this.prisma.article.findMany({
-        take: +limit || 1,
+        take: limit || 1,
         skip: cursor ? 1 : 0,
-        cursor: cursor ? { id: +cursor } : undefined,
+        cursor: cursor ? { id: cursor } : undefined,
       })
 
       return articles
@@ -22,7 +22,7 @@ export class ArticlesService {
     }
   }
 
-  async getArticle({ id }: T_GetArticle) {
+  async getArticle({ id }: T_GetArticleRequest) {
     try {
       const article = await this.prisma.article.findUnique({
         where: { id: +id },

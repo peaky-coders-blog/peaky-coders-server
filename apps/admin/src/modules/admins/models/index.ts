@@ -3,4 +3,4 @@ export {
   T_GetAdminsResponse,
   T_GetAdminResponse,
   T_UpdateAdminResponse,
-} from './response.model'
+} from './responses.model'

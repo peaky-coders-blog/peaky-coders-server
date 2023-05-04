@@ -64,7 +64,7 @@ describe('ArticlesController', () => {
       email: 'test@gmail.com',
     }
 
-    expect(adminsController.updateOne('1', dto)).toEqual({
+    expect(adminsController.updateOne(1, dto)).toEqual({
       id: 1,
       ...dto,
     })

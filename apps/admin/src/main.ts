@@ -25,7 +25,7 @@ async function bootstrap() {
     },
   })
 
-  app.useGlobalPipes(new ValidationPipe())
+  app.useGlobalPipes(new ValidationPipe({ transform: true }))
 
   const config = new DocumentBuilder()
     .setTitle('Peaky coders admin')

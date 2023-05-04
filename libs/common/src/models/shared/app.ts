@@ -9,7 +9,17 @@ export type T_ServerMessage = {
   status: E_ServerMessageStatus
 }
 
-export interface I_Response<T> {
+export interface I_Response<T, P = unknown> {
   data?: T
+  info?: P
   message?: T_ServerMessage
+}
+
+export type T_Pagination = {
+  total: number
+}
+
+export enum E_SortBy {
+  asc = 'asc',
+  desc = 'desc',
 }

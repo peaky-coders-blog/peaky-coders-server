@@ -11,11 +11,7 @@ import { T_AuthTokens } from '@app/common/models/shared/tokens'
 
 @Injectable()
 export class TokensService {
-  constructor(
-    private jwtService: JwtService,
-    private config: ConfigService,
-    private prisma: PrismaService,
-  ) {}
+  constructor(private jwtService: JwtService, private config: ConfigService) {}
 
   async generateClientTokens({
     userId,
