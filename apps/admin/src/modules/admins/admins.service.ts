@@ -56,7 +56,6 @@ export class AdminsService {
       })
       return { data: user }
     } catch (error) {
-      console.log(error)
       throw new ForbiddenException({
         message: { text: error, status: E_ServerMessageStatus.error },
       })

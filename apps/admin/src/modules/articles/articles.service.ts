@@ -9,41 +9,79 @@ import { GetArticlesDto } from './dtos/getArticles.dto'
 @Injectable()
 export class ArticlesService {
   constructor(private prisma: PrismaService) {}
-
   async getAll({
     page,
     limit,
     sort,
-    order,
-    filters,
+    filter,
   }: GetArticlesDto): Promise<T_GetArticlesResponse> {
     const skip = (page - 1) * limit
+    const orderBy = sort.reduce((acc, { field, order }) => {
+      if (/[.]/.test(field)) {
+        const [parentField, childField] = field.split('.')
+        acc.push({
+          [parentField]: {
+            [childField]: order,
+          },
+        })
+      } else {
+        acc.push({
+          [field]: order,
+        })
+      }
+      return acc
+    }, [])
+
+    const where = filter.reduce((acc, { field, value }) => {
+      if (/[.]/.test(field)) {
+        const [parentField, childField] = field.split('.')
+        return {
+          ...acc,
+          [parentField]: {
+            [childField]: {
+              contains: value,
+            },
+          },
+        }
+      } else {
+        return {
+          ...acc,
+          [field]: {
+            contains: value,
+          },
+        }
+      }
+    }, {})
+
+    // try {
     const articles = await this.prisma.article.findMany({
       skip,
       take: limit,
-      orderBy: {
-        [sort]: order,
-      },
-      where: {
-        AND: Object.entries(filters).map(([key, value]) => ({
-          [key]: {
-            contains: value,
-          },
-        })),
+      orderBy,
+      where,
+      include: {
+        author: true,
       },
     })
 
     const total = await this.prisma.article.count({
-      where: {
-        AND: Object.entries(filters).map(([key, value]) => ({
-          [key]: {
-            contains: value,
-          },
-        })),
-      },
+      where,
     })
 
     return { data: articles, info: { total } }
+    // } catch (error) {
+    //   if (error instanceof PrismaClientValidationError) {
+    //     throw new ForbiddenException({
+    //       message: {
+    //         text: 'Ошибка бд',
+    //         status: E_ServerMessageStatus.error,
+    //       },
+    //     })
+    //   }
+    //   throw new ForbiddenException({
+    //     message: { text: error.message, status: E_ServerMessageStatus.error },
+    //   })
+    // }
   }
 
   async getOne(articleId: T_ArticleId): Promise<T_GetArticleResponse> {

@@ -1,48 +1,69 @@
 import { E_SortBy } from '@app/common/models/shared/app'
 import { ApiProperty } from '@nestjs/swagger'
-import { Article } from '@prisma/client'
 import { Transform } from 'class-transformer'
-import {
-  IsEnum,
-  IsNumber,
-  IsObject,
-  IsOptional,
-  IsString,
-} from 'class-validator'
-
-const articleKeys: (keyof Article)[] = ['id', 'title', 'createdAt', 'updatedAt']
+import { IsArray, IsNumber, IsOptional } from 'class-validator'
 
 export class GetArticlesDto {
-  @ApiProperty({ required: false, default: 1 })
+  @ApiProperty({ required: false, type: 'number', default: 1 })
   @IsOptional()
-  @Transform((obj) => Number(obj.value) || 1)
-  @IsNumber()
+  @Transform((obj) => Number(obj.value))
   page = 1
 
-  @ApiProperty({ required: false, default: 10 })
+  @ApiProperty({ required: false, type: 'number', default: 10 })
   @IsOptional()
-  @Transform((obj) => Number(obj.value) || 10)
-  @IsNumber()
+  @Transform((obj) => Number(obj.value))
   limit = 10
-
-  @ApiProperty({ required: false, default: 'createdAt', enum: articleKeys })
-  @IsString()
-  @IsOptional()
-  sort = 'createdAt'
-
-  @ApiProperty({ required: false, default: E_SortBy.desc, enum: E_SortBy })
-  @IsEnum(E_SortBy)
-  @IsOptional()
-  order: E_SortBy = E_SortBy.desc
 
   @ApiProperty({
     required: false,
-    type: 'object',
-    default: {},
-    description:
-      'Если нужны статьи с заголовком у которого есть цифра 9: {"title": "9"}',
+    type: 'array',
+    additionalProperties: {
+      type: 'object',
+    },
+    description: `
+    Сортировка по убыванию даты создания:
+    { "field": "createdAt", "order": "desc" }
+
+    Сортировка по убыванию title и возрастанию id:
+    { "field": "title", "order": "desc" }
+    { "field": "id", "order": "asc" }
+
+    Сортировка по убыванию author и id:
+    { "field": "author.username", "order": "desc" }
+    { "field": "id", "order": "desc" }
+    `,
   })
-  @IsObject()
+  @Transform((obj) => {
+    if (Array.isArray(obj.value)) {
+      return obj.value.map((value) => JSON.parse(value))
+    }
+    return [JSON.parse(obj.value)]
+  })
+  @IsArray()
   @IsOptional()
-  filters: Record<string, any> = {}
+  sort: { field: string; order: E_SortBy }[] = []
+
+  @ApiProperty({
+    required: false,
+    type: 'array',
+    additionalProperties: {
+      type: 'object',
+    },
+    description: `
+    Статьи которые содержат цифру 9 в title:
+    { "field": "title", "value": "9" }
+
+    Статьи которые содержат цифру 1 в title и имя автора содержит Web:
+    { "field": "title", "value": "1" }
+    { "field": "author.username", "value": "Web" }
+    `,
+  })
+  @Transform((obj) => {
+    if (Array.isArray(obj.value)) {
+      return obj.value.map((value) => JSON.parse(value))
+    }
+    return [JSON.parse(obj.value)]
+  })
+  @IsOptional()
+  filter: { field: string; value: string }[] = []
 }

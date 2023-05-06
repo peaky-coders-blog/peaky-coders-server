@@ -1,5 +1,10 @@
 # Start project
 
+0. First steps
+
+- `yarn prisma db push`
+- `yarn prisma:seed`
+
 1. Database
    `docker-compose up`
 
