@@ -40,8 +40,8 @@ export class AdminsController {
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  getOne(@Param('id') id: T_AdminId): Promise<T_GetAdminResponse> {
-    return this.service.getOne(id)
+  getOne(@Param('id') id: string): Promise<T_GetAdminResponse> {
+    return this.service.getOne(+id)
   }
 
   @Post()
