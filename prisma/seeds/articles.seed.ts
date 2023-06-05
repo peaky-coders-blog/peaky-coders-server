@@ -16,7 +16,7 @@ export const articlesSeed = async (user: User) => {
     content: data.content,
     createdAt: new Date(),
     updatedAt: new Date(),
-    status: E_ArticleStatus.PUBLISHED,
+    status: getRandomStatus(),
     authorId: user.id,
   }))
 
@@ -177,4 +177,9 @@ const getRandomIds = <T extends { id: number }>(arr: T[]): number[] => {
     randIndex2 = Math.floor(Math.random() * arr.length)
   }
   return [arr[randIndex1].id, arr[randIndex2].id]
+}
+
+const getRandomStatus = (): E_ArticleStatus => {
+  const statuses = Object.values(E_ArticleStatus)
+  return statuses[Math.floor(Math.random() * statuses.length)]
 }

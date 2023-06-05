@@ -43,6 +43,18 @@ export class ArticlesService {
             },
           },
         }
+      } else if (field === 'status') {
+        if (acc[field]?.in) {
+          acc[field].in.push(value)
+          return acc
+        } else {
+          return {
+            ...acc,
+            [field]: {
+              in: [value],
+            },
+          }
+        }
       } else {
         return {
           ...acc,
@@ -53,7 +65,6 @@ export class ArticlesService {
       }
     }, {})
 
-    // try {
     const articles = await this.prisma.article.findMany({
       skip,
       take: limit,
@@ -69,19 +80,6 @@ export class ArticlesService {
     })
 
     return { data: articles, info: { total } }
-    // } catch (error) {
-    //   if (error instanceof PrismaClientValidationError) {
-    //     throw new ForbiddenException({
-    //       message: {
-    //         text: 'Ошибка бд',
-    //         status: E_ServerMessageStatus.error,
-    //       },
-    //     })
-    //   }
-    //   throw new ForbiddenException({
-    //     message: { text: error.message, status: E_ServerMessageStatus.error },
-    //   })
-    // }
   }
 
   async getOne(articleId: T_ArticleId): Promise<T_GetArticleResponse> {
