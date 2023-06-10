@@ -4,11 +4,11 @@ const prisma = new PrismaClient()
 
 export const reactionsSeed = async () => {
   const reaction = [
-    { name: 'Like', icon: 'like' },
-    { name: 'Surprised', icon: 'surprised' },
-    { name: 'Cry', icon: 'cry' },
-    { name: 'Thoughtful', icon: 'thoughtful' },
-    { name: 'Popcorn', icon: 'popcorn' },
+    { name: 'Like', icon: '❤️' },
+    { name: 'Surprised', icon: '😯' },
+    { name: 'Cry', icon: '😢' },
+    { name: 'Thoughtful', icon: '🤔' },
+    { name: 'Popcorn', icon: '🍿' },
   ]
 
   const isReactionsExist = await prisma.reaction.count()

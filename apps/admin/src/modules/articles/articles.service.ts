@@ -72,6 +72,17 @@ export class ArticlesService {
       where,
       include: {
         author: true,
+        tags: true,
+        ArticleReaction: {
+          include: {
+            reaction: true,
+          },
+        },
+        _count: {
+          select: {
+            ArticleComment: true,
+          },
+        },
       },
     })
 

@@ -39,7 +39,7 @@ export class UsersController {
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   getOne(@Param('id') id: T_UserId): Promise<T_GetUserResponse> {
-    return this.service.getOne(id)
+    return this.service.getOne(+id)
   }
 
   @Post()
@@ -54,12 +54,12 @@ export class UsersController {
     @Param('id') id: T_UserId,
     @Body() dto: UpdateUserDto,
   ): Promise<T_UpdateUserResponse> {
-    return await this.service.updateOne(dto, id)
+    return await this.service.updateOne(dto, +id)
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
   deleteOne(@Param('id') id: T_UserId) {
-    return this.service.deleteOne(id)
+    return this.service.deleteOne(+id)
   }
 }
