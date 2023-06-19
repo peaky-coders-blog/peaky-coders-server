@@ -97,10 +97,24 @@ export class ArticlesService {
     const article = await this.prisma.article.findUnique({
       where: { id: articleId },
       include: {
-        ArticleComment: true,
-        ArticleReaction: true,
+        ArticleComment: {
+          include: {
+            author: true,
+          },
+        },
+        ArticleReaction: {
+          include: {
+            reaction: true,
+            authors: true,
+          },
+        },
         author: true,
         tags: true,
+        _count: {
+          select: {
+            ArticleComment: true,
+          },
+        },
       },
     })
 
