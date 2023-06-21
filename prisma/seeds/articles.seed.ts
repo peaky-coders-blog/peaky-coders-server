@@ -3,7 +3,7 @@ import { Article, E_ArticleStatus, PrismaClient, User } from '@prisma/client'
 const prisma = new PrismaClient()
 
 export const articlesSeed = async (user: User) => {
-  const tags = await prisma.tags.findMany()
+  const tags = await prisma.tag.findMany()
   const reactions = await prisma.reaction.findMany()
   const reactionConnections = reactions.map((reaction) => ({
     reactionId: reaction.id,

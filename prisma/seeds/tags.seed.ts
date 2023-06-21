@@ -4,19 +4,27 @@ const prisma = new PrismaClient()
 
 export const tagsSeed = async () => {
   const tags = [
-    { name: 'React', description: 'Библиотека от Facebook', icon: 'react' },
-    { name: 'NestJS', description: 'Кот на логотипе', icon: 'nestjs' },
-    { name: 'Styled Components', description: 'CSS-in-JS', icon: 'sc' },
-    { name: 'Vue', description: 'Зелёная команда', icon: 'vue' },
+    {
+      name: 'React',
+      description: 'Библиотека от Facebook',
+      icon: 'BiLogoReact',
+    },
+    { name: 'NestJS', description: 'Кот на логотипе', icon: 'SiNestjs' },
+    {
+      name: 'Styled Components',
+      description: 'CSS-in-JS',
+      icon: 'SiStyledcomponents',
+    },
+    { name: 'Vue', description: 'Зелёная команда', icon: 'FaVuejs' },
     {
       name: 'Redux',
       description: 'Model Controller для вашего приложения',
-      icon: 'redux',
+      icon: 'BiLogoRedux',
     },
   ]
-  const isTagsExist = await prisma.tags.count()
+  const isTagsExist = await prisma.tag.count()
 
   if (!isTagsExist) {
-    await prisma.tags.createMany({ data: tags })
+    await prisma.tag.createMany({ data: tags })
   }
 }

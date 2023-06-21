@@ -36,7 +36,7 @@ model Article {
   author   User            @relation(fields: [authorId], references: [id])
   authorId Int
 
-  tags Tags[] @relation("TagsOnArticles")
+  tags Tag[] @relation("TagsOnArticles")
 
   ArticleComment  ArticleComment[]
   ArticleReaction ArticleReaction[]
@@ -82,11 +82,11 @@ model ArticleCommentVotes {
   authorId          Int
 }
 
-model Tags {
+model Tag {
   id          Int     @id @default(autoincrement())
   name        String  @unique
   description String?
-  icon        String
+  icon        String?
 
   articles Article[] @relation("TagsOnArticles")
 
