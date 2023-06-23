@@ -59,12 +59,12 @@ model ArticleComment {
   votes               Int
   articleCommentVotes ArticleCommentVotes[]
 
-  article Article @relation(fields: [articleId], references: [id])
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
 
   authorId Int
   author   User @relation(fields: [authorId], references: [id])
 
-  articleComment ArticleComment?  @relation("ArticleComment", fields: [parentId], references: [id])
+  articleComment ArticleComment?  @relation("ArticleComment", fields: [parentId], references: [id], onDelete: Cascade)
   subcomments    ArticleComment[] @relation("ArticleComment")
   parentId       Int?
 
@@ -75,7 +75,7 @@ model ArticleComment {
 model ArticleCommentVotes {
   id Int @id @default(autoincrement())
 
-  articleComment   ArticleComment @relation(fields: [articleCommentId], references: [id])
+  articleComment   ArticleComment @relation(fields: [articleCommentId], references: [id], onDelete: Cascade)
   articleCommentId Int
 
   authorCommentVote User @relation(fields: [authorId], references: [id])
@@ -98,10 +98,10 @@ model ArticleReaction {
   id      Int @id @default(autoincrement())
   counter Int
 
-  reaction   Reaction @relation(fields: [reactionId], references: [id])
+  reaction   Reaction @relation(fields: [reactionId], references: [id], onDelete: Cascade)
   reactionId Int
 
-  article   Article @relation(fields: [articleId], references: [id])
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
   articleId Int
 
   authors User[] @relation("ArticleReactionOnUser")

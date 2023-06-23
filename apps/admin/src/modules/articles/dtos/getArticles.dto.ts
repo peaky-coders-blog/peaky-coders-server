@@ -1,7 +1,7 @@
 import { E_SortBy } from '@app/common/models/shared/app'
 import { ApiProperty } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
-import { IsArray, IsNumber, IsOptional } from 'class-validator'
+import { IsArray, IsOptional } from 'class-validator'
 
 export class GetArticlesDto {
   @ApiProperty({ required: false, type: 'number', default: 1 })
