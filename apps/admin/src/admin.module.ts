@@ -7,6 +7,7 @@ import { AdminsModule } from './modules/admins/admins.module'
 import { UsersModule } from './modules/users/users.module'
 import { ArticlesModule } from './modules/articles/articles.module'
 import { TagsModule } from './modules/tags/tags.module'
+import { CommentsModule } from './modules/comments/tags/comments.module'
 
 import { PrismaModule } from '@app/common/modules/prisma/prisma.module'
 
@@ -20,6 +21,7 @@ import { PrismaModule } from '@app/common/modules/prisma/prisma.module'
     UsersModule,
     ArticlesModule,
     TagsModule,
+    CommentsModule,
   ],
   controllers: [],
 })

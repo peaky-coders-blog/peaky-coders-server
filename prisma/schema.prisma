@@ -64,7 +64,7 @@ model ArticleComment {
   authorId Int
   author   User @relation(fields: [authorId], references: [id])
 
-  articleComment ArticleComment?  @relation("ArticleComment", fields: [parentId], references: [id], onDelete: Cascade)
+  articleComment ArticleComment?  @relation("ArticleComment", fields: [parentId], references: [id])
   subcomments    ArticleComment[] @relation("ArticleComment")
   parentId       Int?
 

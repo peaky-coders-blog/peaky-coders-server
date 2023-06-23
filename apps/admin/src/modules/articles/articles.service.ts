@@ -158,6 +158,7 @@ export class ArticlesService {
           title: dto.title,
           content: dto.content,
           status: dto.status,
+          updatedAt: new Date(),
           tags: {
             connect: dto.tags.map((tag) => ({ id: Number(tag) })),
           },

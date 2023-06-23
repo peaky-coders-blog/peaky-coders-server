@@ -1,5 +1,4 @@
 import { ForbiddenException, Injectable } from '@nestjs/common'
-import * as argon2 from 'argon2'
 
 import { CreateTagDto } from './dtos'
 import { T_CreateTagResponse, T_GetTagsResponse } from './models'
