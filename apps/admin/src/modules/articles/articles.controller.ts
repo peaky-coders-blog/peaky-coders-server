@@ -8,6 +8,7 @@ import {
   Delete,
   Param,
   Query,
+  Post,
   UseGuards,
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger'
@@ -15,7 +16,7 @@ import { AuthGuard } from '@nestjs/passport'
 
 import { T_GetArticlesResponse, T_GetArticleResponse } from './models'
 import { ArticlesService } from './articles.service'
-import { UpdateArticleDto, GetArticlesDto } from './dtos'
+import { UpdateArticleDto, GetArticlesDto, CreateArticleDto } from './dtos'
 
 @ApiBearerAuth()
 @UseGuards(AuthGuard('jwt'))
@@ -37,11 +38,11 @@ export class ArticlesController {
     return this.service.getOne(id)
   }
 
-  // @Post()
-  // @HttpCode(HttpStatus.CREATED)
-  // createOne(@Body() dto: CreateUserDto): Promise<T_CreateUserResponse> {
-  //   return this.service.createOne(dto) 37 38 210 306  | 62 63 64 65 61
-  // }
+  @Post()
+  @HttpCode(HttpStatus.CREATED)
+  createOne(@Body() dto: CreateArticleDto) {
+    return this.service.createOne(dto)
+  }
 
   @Put(':id')
   @HttpCode(HttpStatus.OK)

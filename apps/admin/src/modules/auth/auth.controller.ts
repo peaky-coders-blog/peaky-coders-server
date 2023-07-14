@@ -16,7 +16,6 @@ import { T_AuthResponse, T_RefreshResponse } from './models'
 
 import { GetUserId } from '@app/common/decorators/getUserId.decorator'
 import { JwtRefreshGuard } from '@app/common/guards/jwtRefresh.guard'
-import { T_AdminId } from '@app/common/models/shared/admin'
 import { T_TokenData } from 'apps/admin/src/modules/auth/models/token.model'
 import { TokensService } from '@app/common/modules/tokens/tokens.service'
 import { GetAdminTokenData } from '@app/common/decorators/getAdminTokenData.decorator'
@@ -41,7 +40,7 @@ export class AuthController {
   @UseGuards(AuthGuard('jwt'))
   @Get('check')
   @HttpCode(HttpStatus.OK)
-  checkAuth(@GetUserId() adminId: T_AdminId): Promise<T_AuthResponse> {
+  checkAuth(@GetUserId() adminId: number): Promise<T_AuthResponse> {
     return this.service.check(adminId)
   }
 

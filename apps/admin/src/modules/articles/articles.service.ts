@@ -3,8 +3,7 @@ import { ForbiddenException, Injectable } from '@nestjs/common'
 import { T_GetArticlesResponse, T_GetArticleResponse } from './models'
 
 import { PrismaService } from '@app/common/modules/prisma/prisma.service'
-import { T_ArticleId } from '@app/common/models/shared/article'
-import { GetArticlesDto, UpdateArticleDto } from './dtos'
+import { CreateArticleDto, GetArticlesDto, UpdateArticleDto } from './dtos'
 import { E_ServerMessageStatus } from '@app/common/models/shared/app'
 
 @Injectable()
@@ -94,7 +93,7 @@ export class ArticlesService {
     return { data: articles, info: { total } }
   }
 
-  async getOne(articleId: T_ArticleId): Promise<T_GetArticleResponse> {
+  async getOne(articleId: number): Promise<T_GetArticleResponse> {
     const article = await this.prisma.article.findUnique({
       where: { id: articleId },
       include: {
@@ -122,17 +121,19 @@ export class ArticlesService {
     return { data: article }
   }
 
-  // async createOne(dto: CreateUserDto): Promise<T_CreateUserResponse> {
-  //   const user = await this.prisma.user.create({
-  //     data: {
-  //       ...dto,
-  //     },
-  //   })
+  async createOne(dto: CreateArticleDto) {
+    await this.prisma.article.create({
+      data: {
+        title: dto.title,
+        content: dto.content,
+        status: dto.status,
+        author: { connect: { id: dto.authorId } },
+        tags: { connect: dto.tags.map((tag) => ({ id: tag })) },
+      },
+    })
+  }
 
-  //   return { data: user }
-  // }
-
-  async updateOne(dto: UpdateArticleDto, articleId: T_ArticleId) {
+  async updateOne(dto: UpdateArticleDto, articleId: number) {
     try {
       const article = await this.prisma.article.findUnique({
         where: {
@@ -171,7 +172,7 @@ export class ArticlesService {
     }
   }
 
-  async deleteOne(articleId: T_ArticleId) {
+  async deleteOne(articleId: number) {
     await this.prisma.article.delete({ where: { id: articleId } })
   }
 }

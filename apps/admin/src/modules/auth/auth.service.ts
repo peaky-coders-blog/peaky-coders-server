@@ -5,7 +5,6 @@ import { SignInDto } from './dtos/signIn.dto'
 import { T_AuthResponse } from './models'
 
 import { E_ServerMessageStatus } from '@app/common/models/shared/app'
-import { T_AdminId } from '@app/common/models/shared/admin'
 import { PrismaService } from '@app/common/modules/prisma/prisma.service'
 import { TokensService } from '@app/common/modules/tokens/tokens.service'
 
@@ -57,9 +56,9 @@ export class AuthService {
     }
   }
 
-  async check(userId: T_AdminId): Promise<T_AuthResponse> {
+  async check(adminId: number): Promise<T_AuthResponse> {
     const admin = await this.prisma.admin.findUnique({
-      where: { id: userId },
+      where: { id: adminId },
     })
 
     // Если пользователь не найден

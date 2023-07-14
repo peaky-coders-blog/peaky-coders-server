@@ -9,11 +9,12 @@ import {
   Param,
   Put,
   UseGuards,
+  Query,
 } from '@nestjs/common'
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger'
 import { AuthGuard } from '@nestjs/passport'
 
-import { CreateUserDto, UpdateUserDto } from './dtos'
+import { CreateUserDto, UpdateUserDto, GetUsersDto } from './dtos'
 import {
   T_GetUsersResponse,
   T_GetUserResponse,
@@ -21,7 +22,6 @@ import {
   T_CreateUserResponse,
 } from './models'
 import { UsersService } from './users.service'
-import { T_UserId } from '@app/common/models/shared/user'
 
 @ApiBearerAuth()
 @UseGuards(AuthGuard('jwt'))
@@ -32,14 +32,14 @@ export class UsersController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  getAll(): Promise<T_GetUsersResponse> {
-    return this.service.getAll()
+  getAll(@Query() query: GetUsersDto): Promise<T_GetUsersResponse> {
+    return this.service.getAll(query)
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  getOne(@Param('id') id: T_UserId): Promise<T_GetUserResponse> {
-    return this.service.getOne(+id)
+  getOne(@Param('id') userId: number): Promise<T_GetUserResponse> {
+    return this.service.getOne(userId)
   }
 
   @Post()
@@ -51,15 +51,15 @@ export class UsersController {
   @Put(':id')
   @HttpCode(HttpStatus.OK)
   async updateOne(
-    @Param('id') id: T_UserId,
+    @Param('id') userId: number,
     @Body() dto: UpdateUserDto,
   ): Promise<T_UpdateUserResponse> {
-    return await this.service.updateOne(dto, +id)
+    return await this.service.updateOne(dto, userId)
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  deleteOne(@Param('id') id: T_UserId) {
-    return this.service.deleteOne(+id)
+  deleteOne(@Param('id') userId: number) {
+    return this.service.deleteOne(userId)
   }
 }

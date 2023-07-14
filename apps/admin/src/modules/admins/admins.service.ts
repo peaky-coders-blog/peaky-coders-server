@@ -9,7 +9,6 @@ import {
   T_GetAdminResponse,
 } from './models'
 
-import { T_AdminId } from '@app/common/models/shared/admin'
 import { E_ServerMessageStatus } from '@app/common/models/shared/app'
 import { PrismaService } from '@app/common/modules/prisma/prisma.service'
 
@@ -30,7 +29,7 @@ export class AdminsService {
     return { data: admins }
   }
 
-  async getOne(adminId: T_AdminId): Promise<T_GetAdminResponse> {
+  async getOne(adminId: number): Promise<T_GetAdminResponse> {
     const admin = await this.prisma.admin.findUnique({
       where: { id: adminId },
       select: {
@@ -63,7 +62,7 @@ export class AdminsService {
   }
 
   async updateOne(
-    adminId: T_AdminId,
+    adminId: number,
     dto: UpdateAdminDto,
   ): Promise<T_UpdateAdminResponse> {
     try {
@@ -80,13 +79,13 @@ export class AdminsService {
     }
   }
 
-  async deleteOne(adminId: T_AdminId) {
+  async deleteOne(adminId: number) {
     await this.prisma.admin.delete({
       where: { id: adminId },
     })
   }
 
-  async changePassword(dto: ChangePasswordDto, adminId: T_AdminId) {
+  async changePassword(dto: ChangePasswordDto, adminId: number) {
     const password = await argon2.hash(dto.password)
     await this.prisma.admin.update({
       where: { id: adminId },

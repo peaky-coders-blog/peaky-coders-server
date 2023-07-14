@@ -7,9 +7,10 @@ import { AdminsModule } from './modules/admins/admins.module'
 import { UsersModule } from './modules/users/users.module'
 import { ArticlesModule } from './modules/articles/articles.module'
 import { TagsModule } from './modules/tags/tags.module'
-import { CommentsModule } from './modules/comments/tags/comments.module'
+import { CommentsModule } from './modules/comments/comments.module'
 
 import { PrismaModule } from '@app/common/modules/prisma/prisma.module'
+import { ReactionsModule } from './modules/reactions/reactions.module'
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { PrismaModule } from '@app/common/modules/prisma/prisma.module'
     ArticlesModule,
     TagsModule,
     CommentsModule,
+    ReactionsModule,
   ],
   controllers: [],
 })

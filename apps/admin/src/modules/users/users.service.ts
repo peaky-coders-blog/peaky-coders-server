@@ -1,6 +1,6 @@
 import { ForbiddenException, Injectable } from '@nestjs/common'
 
-import { CreateUserDto, UpdateUserDto } from './dtos'
+import { CreateUserDto, GetUsersDto, UpdateUserDto } from './dtos'
 import {
   T_GetUsersResponse,
   T_GetUserResponse,
@@ -8,7 +8,6 @@ import {
   T_CreateUserResponse,
 } from './models'
 
-import { T_UserId } from '@app/common/models/shared/user'
 import { E_ServerMessageStatus } from '@app/common/models/shared/app'
 import { PrismaService } from '@app/common/modules/prisma/prisma.service'
 
@@ -16,13 +15,65 @@ import { PrismaService } from '@app/common/modules/prisma/prisma.service'
 export class UsersService {
   constructor(private prisma: PrismaService) {}
 
-  async getAll(): Promise<T_GetUsersResponse> {
-    const users = await this.prisma.user.findMany()
+  async getAll({ filter, sort }: GetUsersDto): Promise<T_GetUsersResponse> {
+    const orderBy = sort.reduce((acc, { field, order }) => {
+      if (/[.]/.test(field)) {
+        const [parentField, childField] = field.split('.')
+        acc.push({
+          [parentField]: {
+            [childField]: order,
+          },
+        })
+      } else {
+        acc.push({
+          [field]: order,
+        })
+      }
+      return acc
+    }, [])
+
+    const where = filter.reduce((acc, { field, value }) => {
+      if (/[.]/.test(field)) {
+        const [parentField, childField] = field.split('.')
+        return {
+          ...acc,
+          [parentField]: {
+            [childField]: {
+              contains: value,
+            },
+          },
+        }
+      } else if (field === 'from') {
+        if (acc[field]?.in) {
+          acc[field].in.push(value)
+          return acc
+        } else {
+          return {
+            ...acc,
+            [field]: {
+              in: [value],
+            },
+          }
+        }
+      } else {
+        return {
+          ...acc,
+          [field]: {
+            contains: value,
+          },
+        }
+      }
+    }, {})
+
+    const users = await this.prisma.user.findMany({
+      where,
+      orderBy,
+    })
 
     return { data: users }
   }
 
-  async getOne(userId: T_UserId): Promise<T_GetUserResponse> {
+  async getOne(userId: number): Promise<T_GetUserResponse> {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
     })
@@ -42,7 +93,7 @@ export class UsersService {
 
   async updateOne(
     dto: UpdateUserDto,
-    userId: T_UserId,
+    userId: number,
   ): Promise<T_UpdateUserResponse> {
     try {
       const user = await this.prisma.user.update({
@@ -58,7 +109,7 @@ export class UsersService {
     }
   }
 
-  async deleteOne(userId: T_UserId) {
+  async deleteOne(userId: number) {
     await this.prisma.user.delete({ where: { id: userId } })
   }
 }
