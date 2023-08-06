@@ -10,15 +10,16 @@ export const articlesSeed = async (user: User) => {
     counter: 0,
   }))
 
-  const mockArticles: Article[] = generateArticles(100).map((data, index) => ({
-    id: index,
-    title: data.title,
-    content: data.content,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    status: getRandomStatus(),
-    authorId: user.id,
-  }))
+  const mockArticles: Omit<Article, 'id'>[] = generateArticles(100).map(
+    (data) => ({
+      title: data.title,
+      content: data.content,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      status: getRandomStatus(),
+      authorId: user.id,
+    }),
+  )
 
   mockArticles.forEach(async (article) => {
     const [randomTagId1, randomTagId2] = getRandomIds(tags)

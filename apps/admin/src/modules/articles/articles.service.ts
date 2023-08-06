@@ -122,12 +122,13 @@ export class ArticlesService {
   }
 
   async createOne(dto: CreateArticleDto) {
+    console.log('dto', dto)
     await this.prisma.article.create({
       data: {
         title: dto.title,
         content: dto.content,
         status: dto.status,
-        author: { connect: { id: dto.authorId } },
+        authorId: 1,
         tags: { connect: dto.tags.map((tag) => ({ id: tag })) },
       },
     })
@@ -143,6 +144,8 @@ export class ArticlesService {
           tags: true,
         },
       })
+
+      // Убираем все теги, чтобы присвоить новые
       await this.prisma.article.update({
         where: {
           id: Number(articleId),
