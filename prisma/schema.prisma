@@ -35,6 +35,7 @@ model Article {
   status   E_ArticleStatus
   author   User            @relation(fields: [authorId], references: [id])
   authorId Int
+  views    Int
 
   tags Tag[] @relation("TagsOnArticles")
 

@@ -129,6 +129,7 @@ export class ArticlesService {
         content: dto.content,
         status: dto.status,
         authorId: 1,
+        views: 0,
         tags: { connect: dto.tags.map((tag) => ({ id: tag })) },
       },
     })

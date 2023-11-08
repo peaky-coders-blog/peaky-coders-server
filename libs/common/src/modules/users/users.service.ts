@@ -20,10 +20,7 @@ export class UsersService {
     })
   }
 
-  async findUnique(
-    name: 'id' | 'email',
-    param: number | string,
-  ): Promise<User> {
+  async findUnique(name: 'email', param: string): Promise<User> {
     return await this.prisma.user.findUnique({
       where: { [name]: param },
     })

@@ -18,6 +18,7 @@ export const articlesSeed = async (user: User) => {
       updatedAt: new Date(),
       status: getRandomStatus(),
       authorId: user.id,
+      views: 0,
     }),
   )
 
