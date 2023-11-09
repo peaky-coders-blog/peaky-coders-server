@@ -11,7 +11,15 @@ export class TagsService {
   constructor(private prisma: PrismaService) {}
 
   async getAll(): Promise<T_GetTagsResponse> {
-    const tags = await this.prisma.tag.findMany()
+    const tags = await this.prisma.tag.findMany({
+      include: {
+        _count: {
+          select: {
+            articles: true,
+          },
+        },
+      },
+    })
 
     return { data: tags }
   }
