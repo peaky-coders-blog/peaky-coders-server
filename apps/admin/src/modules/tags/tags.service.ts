@@ -27,9 +27,7 @@ export class TagsService {
   async createOne(dto: CreateTagDto): Promise<T_CreateTagResponse> {
     try {
       const tag = await this.prisma.tag.create({
-        data: {
-          name: dto.name,
-        },
+        data: dto,
       })
       return { data: tag }
     } catch (error) {

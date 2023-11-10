@@ -7,19 +7,27 @@ export const tagsSeed = async () => {
     {
       name: 'React',
       description: 'Библиотека от Facebook',
-      icon: 'BiLogoReact',
+      icon: 'devicon-react-original',
     },
-    { name: 'NestJS', description: 'Кот на логотипе', icon: 'SiNestjs' },
+    {
+      name: 'NestJS',
+      description: 'Кот на логотипе',
+      icon: 'devicon-nestjs-plain',
+    },
     {
       name: 'Styled Components',
       description: 'CSS-in-JS',
-      icon: 'SiStyledcomponents',
+      icon: '',
     },
-    { name: 'Vue', description: 'Зелёная команда', icon: 'FaVuejs' },
+    {
+      name: 'Vue',
+      description: 'Зелёная команда',
+      icon: 'devicon-vuejs-plain',
+    },
     {
       name: 'Redux',
       description: 'Model Controller для вашего приложения',
-      icon: 'BiLogoRedux',
+      icon: 'devicon-redux-original',
     },
   ]
   const isTagsExist = await prisma.tag.count()

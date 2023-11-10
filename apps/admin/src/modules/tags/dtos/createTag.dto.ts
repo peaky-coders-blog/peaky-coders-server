@@ -5,4 +5,12 @@ export class CreateTagDto {
   @ApiProperty({ default: 'prisma' })
   @IsString()
   name: string
+
+  @ApiProperty()
+  @IsString()
+  icon: string
+
+  @ApiProperty()
+  @IsString()
+  description: string
 }
