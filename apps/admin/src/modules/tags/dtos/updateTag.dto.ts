@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { IsOptional, IsString } from 'class-validator'
 
-export class CreateTagDto {
+export class UpdateTagDto {
   @ApiProperty({ default: 'prisma' })
   @IsString()
   name: string
