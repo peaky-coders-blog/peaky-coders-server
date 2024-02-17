@@ -15,3 +15,5 @@
 
 3. Visual Database
    `yarn prisma studio`
+
+КАСКАДНОЕ УДАЛЕНИЕ СДЕЛАЙ, СУКА, У КОММЕНТОВ К СТАТЬЕ

@@ -122,7 +122,12 @@ export class ArticlesService {
   }
 
   async createOne(dto: CreateArticleDto) {
-    console.log('dto', dto)
+    const reactions = await this.prisma.reaction.findMany()
+    const reactionConnections = reactions.map((reaction) => ({
+      reactionId: reaction.id,
+      counter: 0,
+    }))
+
     await this.prisma.article.create({
       data: {
         title: dto.title,
@@ -131,6 +136,9 @@ export class ArticlesService {
         authorId: 1,
         views: 0,
         tags: { connect: dto.tags.map((tag) => ({ id: tag })) },
+        ArticleReaction: {
+          createMany: { data: reactionConnections },
+        },
       },
     })
   }
