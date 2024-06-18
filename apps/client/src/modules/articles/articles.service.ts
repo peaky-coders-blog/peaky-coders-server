@@ -52,7 +52,7 @@ export class ArticlesService {
     text: string
   }) {
     try {
-      const article = await this.prisma.article.update({
+      await this.prisma.article.update({
         where: { id },
         data: {
           ArticleComment: {
